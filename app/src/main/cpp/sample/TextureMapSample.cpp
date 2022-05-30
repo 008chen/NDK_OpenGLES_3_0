@@ -20,12 +20,19 @@ TextureMapSample::~TextureMapSample()
 void TextureMapSample::Init()
 {
 	//create RGBA texture
+	//生成一个纹理，将纹理 id 赋值给 m_TextureId
 	glGenTextures(1, &m_TextureId);
+	//将纹理 m_TextureId 绑定到类型 GL_TEXTURE_2D 纹理
 	glBindTexture(GL_TEXTURE_2D, m_TextureId);
+	//设置纹理 S 轴（横轴）的拉伸方式为截取
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	//设置纹理采样方式
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	//绑定默认纹理，避免修改到：m_TextureId纹理
 	glBindTexture(GL_TEXTURE_2D, GL_NONE);
 
 	char vShaderStr[] =
@@ -63,6 +70,7 @@ void TextureMapSample::Init()
 
 }
 
+// 加载图像数据、纹理坐标和顶点坐标数据，绘制实现纹理映射
 void TextureMapSample::Draw(int screenW, int screenH)
 {
 	LOGCATE("TextureMapSample::Draw()");
@@ -91,6 +99,7 @@ void TextureMapSample::Draw(int screenW, int screenH)
 	//upload RGBA image data
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_TextureId);
+	//加载 RGBA 格式的图像数据
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_RenderImage.width, m_RenderImage.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_RenderImage.ppPlane[0]);
 	glBindTexture(GL_TEXTURE_2D, GL_NONE);
 
@@ -112,6 +121,7 @@ void TextureMapSample::Draw(int screenW, int screenH)
 	glBindTexture(GL_TEXTURE_2D, m_TextureId);
 
 	// Set the RGBA map sampler to texture unit to 0
+//	通过glUniform1i的设置，我们保证每个uniform采样器对应着正确的纹理单元。
 	glUniform1i(m_SamplerLoc, 0);
 
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, indices);

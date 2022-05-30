@@ -352,7 +352,9 @@ bool PBOSample::CreateFrameBufferObj()
 
 	// 创建并初始化 FBO
 	glGenFramebuffers(1, &m_FboId);
+	// 绑定 FBO
 	glBindFramebuffer(GL_FRAMEBUFFER, m_FboId);
+	// 绑定 FBO 纹理
 	glBindTexture(GL_TEXTURE_2D, m_FboTextureId);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_FboTextureId, 0);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_RenderImage.width, m_RenderImage.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);

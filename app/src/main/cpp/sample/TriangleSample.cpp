@@ -66,6 +66,7 @@ void TriangleSample::Draw(int screenW, int screenH)
 	glUseProgram (m_ProgramObj);
 
 	// Load the vertex data
+	// 第一个参数为对应属性的 location 值
 	glVertexAttribPointer (0, 3, GL_FLOAT, GL_FALSE, 0, vVertices );
 	glEnableVertexAttribArray (0);
 
